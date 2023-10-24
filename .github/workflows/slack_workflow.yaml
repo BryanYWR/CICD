@@ -1,0 +1,35 @@
+#name of workflow
+name: slack workflow
+
+#setting the trigger conditions
+on: 
+    push:
+        branches:
+            - 'v[0-9]+.[0-9]+'
+
+
+jobs:
+    slack_CI:
+        #from this point on it is run in Ubuntu
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              id: checkout_my_source
+              uses: actions/checkout@v4
+
+            - name: Run Trivy scanner in fs mode
+              id: Trivy_scan
+              uses: aquasecurity/trivy-action@master
+              with:
+                scan-type: 'fs'
+                scan-ref: '.'
+                format: 'table'
+                severity: CRITICAL
+            
+            - name: slack-notify
+              id: slack_notification
+              uses: rtCamp/action-slack-notify@v2
+              env:
+                SLACK_WEBHOOK: 
+
