@@ -41,7 +41,7 @@ jobs:
               uses: docker/build-push-action@v5
               with:
                 push: true
-                tags: bryanywr/cicd:${{ github.sha }}
+                tags: bryanywr/cicd:latest
         
             - name: Install Cosign
               id: install_cosign
@@ -53,7 +53,7 @@ jobs:
               run: |
                 cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
               env:
-                TAGS: bryanywr/cicd:${{ github.sha }}
+                TAGS: bryanywr/cicd:latest
                 COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
                 COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
                 DIGEST: ${{ steps.build-and-push.outputs.digest }}
@@ -61,7 +61,7 @@ jobs:
             - name: Sign the images with GitHub OIDC Token
               env:
                 DIGEST: ${{ steps.build-and-push.outputs.digest }}
-                TAGS: bryanywr/cicd:${{ github.sha }}
+                TAGS: bryanywr/cicd:latest
               run: cosign sign --yes "${TAGS}@${DIGEST}"
             
             - name: slack-notify
