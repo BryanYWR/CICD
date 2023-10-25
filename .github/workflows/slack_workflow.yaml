@@ -115,4 +115,3 @@ jobs:
                   GitHub: https://github.com/BryanYWR/CICD.git
                   Docker: https://hub.docker.com/repository/docker/bryanywr/cicd/general
                 SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-
